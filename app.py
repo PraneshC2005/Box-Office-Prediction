@@ -49,7 +49,7 @@ spoken_langs = st.number_input("Number of Spoken Languages", value=1)
 popularity = st.slider("TMDB Popularity Score", min_value=0.0, max_value=100.0, value=50.0)
 
 # Predict button
-if st.button("Predict Director's Revenue"):
+if st.button("Predict Movie's Revenue"):
     new_data = pd.DataFrame([{
         'budget': budget,
         'runtime': runtime,
