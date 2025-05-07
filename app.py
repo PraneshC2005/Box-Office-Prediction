@@ -75,7 +75,7 @@ if st.button("📊 Predict Revenue"):
     input_data = pd.DataFrame([{
         'budget': np.log1p(budget), 
         'runtime': runtime,
-        'DirectorRev': np.log1p(director_rev),
+        'Director_Revenue': np.log1p(director_rev),
         'spoken_languages': spoken_langs,
         'popularity': popularity,
         'collectionYN': collectionYN,
