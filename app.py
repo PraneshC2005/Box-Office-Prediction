@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from xgboost import XGBRegressor
@@ -48,13 +50,15 @@ y_val_true = np.expm1(y_val)
 r2 = r2_score(y_val_true, y_pred)
 mae = mean_absolute_error(y_val_true, y_pred)
 mse = mean_squared_error(y_val_true, y_pred)
+mae = mae/10000000
+mse = mse/1000000000000000
 
-print("R² Score:", r2 * 10)
-print("Mean Absolute Error:", mae)
-print("Mean Squared Error:", mse)
+print("R2 Score : ",r2*10)
+print("Mean Absolute Error : ",mae)
+print("Mean Squared Error : ",mse)
 
 # Streamlit UI
-st.title("🎬 Box Office Revenue Prediction App")
+st.title("Box Office Revenue Prediction App")
 st.markdown("Enter movie details below to predict expected revenue.")
 
 # Input form
@@ -69,7 +73,7 @@ EnYN = st.selectbox("🇺🇸 Is English the Language?", [0, 1])
 # Predict button
 if st.button("📊 Predict Revenue"):
     input_data = pd.DataFrame([{
-        'budget': np.log1p(budget),
+        'budget': np.log1p(budget), 
         'runtime': runtime,
         'DirectorRev': np.log1p(director_rev),
         'spoken_languages': spoken_langs,
@@ -81,4 +85,32 @@ if st.button("📊 Predict Revenue"):
     input_scaled = scaler.transform(input_data)
     prediction_log = model.predict(input_scaled)
     prediction = np.expm1(prediction_log)
-    st.success(f"🎉 Predicted Revenue: ${prediction[0]:,.2f}")
+    st.success(f"Predicted Revenue: ${prediction[0]:,.2f}")
+
+# # Display evaluation scores
+# st.markdown("### 📈 Model Performance")
+# st.write(f"**R² Score:** {r2*10:.2f}")
+# st.write(f"**Mean Absolute Error:** {mae:,.2f}")
+# st.write(f"**Mean Squared Error:** {mse:,.2f}")
+
+# # Show plots
+# st.markdown("## 🔍 Data Visualizations")
+
+# # 1. Distribution of revenue
+# fig1, ax1 = plt.subplots()
+# sns.histplot(df['revenue'], kde=True, bins=40, color='skyblue', ax=ax1)
+# ax1.set_title("Distribution of Target Variable (Revenue)")
+# ax1.set_xlabel("Revenue")
+# st.pyplot(fig1)
+
+# # 2. Box plot: Spoken Languages vs Revenue
+# fig2, ax2 = plt.subplots()
+# sns.boxplot(x='spoken_languages', y='revenue', data=df, ax=ax2)
+# ax2.set_title("Spoken Languages vs Revenue")
+# st.pyplot(fig2)
+
+# # 3. Scatter plot: Runtime vs Revenue
+# fig3, ax3 = plt.subplots()
+# sns.scatterplot(x='runtime', y='revenue', data=df, alpha=0.5, ax=ax3)
+# ax3.set_title("Runtime vs Revenue")
+# st.pyplot(fig3)
