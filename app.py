@@ -31,7 +31,7 @@ y = X['log_revenue']
 X = X[features]
 
 # Train-test split
-X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.5, random_state=42)
 
 # Scale features
 scaler = StandardScaler()
@@ -75,7 +75,7 @@ if st.button("📊 Predict Revenue"):
     input_data = pd.DataFrame([{
         'budget': np.log1p(budget), 
         'runtime': runtime,
-        'Director_Revenue': np.log1p(director_rev),
+        'DirectorRev': np.log1p(director_rev),
         'spoken_languages': spoken_langs,
         'popularity': popularity,
         'collectionYN': collectionYN,
